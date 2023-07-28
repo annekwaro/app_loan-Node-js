@@ -1,0 +1,38 @@
+
+// Select the database to use.
+use('loanapp');
+
+
+//db.sales.drop();
+
+db.lender.insertMany([
+  { '_id': 1, 'name': 'Jean',    'department': 'Isere',   'address': '3 rue Alsace',  'telephone': '0695568027', 'email': 'jean@gmail.com', 'date': new Date('2014-03-01T08:00:00Z') },
+  { '_id': 2, 'name': 'Anne',    'department': 'Aisne',   'address': '5 rue Grenoble','telephone': '0775238599', 'email': 'anne@gmail.com', 'date': new Date('2014-03-01T09:00:00Z') },
+  { '_id': 3, 'name': 'Farnaz',  'department': 'Aveyron', 'address': '1 rue Claix',   'telephone': '0771016026', 'email': 'farnaz@gmail.com', 'date': new Date('2014-03-15T09:00:00Z') },
+  { '_id': 4, 'name': 'Victor',  'department': 'Cantal',  'address': '7 rue Domene',  'telephone': '0605557449', 'email':  'victor@gmail.com', 'date': new Date('2014-04-04T11:21:39.736Z') },
+  { '_id': 5, 'name': 'Nesrine', 'department': 'Drôme',   'address': '13 rue Eyben',  'telephone': '0630413078', 'email': 'nesrine@gmail.com', 'date': new Date('2014-04-04T21:23:13.331Z') },
+  { '_id': 6, 'name': 'Salim',   'department': 'Loire',   'address': '21 rue Annexe', 'telephone': '0619158085', 'email': 'salim@gmail.com', 'date': new Date('2015-06-04T05:08:13Z') },
+  { '_id': 7, 'name': 'Mohammed','department': 'Nord',    'address': '18 rue Etienne','telephone': '0652443066', 'email': 'mohammed@gmail.com', 'date': new Date('2015-09-10T08:43:00Z') },
+  { '_id': 8, 'name': 'Pierre',  'department': 'Rhône',   'address': '6 rue Martins', 'telephone': '0765778433', 'email': 'pierre@gmail.com', 'date': new Date('2016-02-06T20:20:13Z') },
+]);
+
+db.borrower.insertMany([
+  { '_id': 9,  'name': 'Albert',  'address': '5 rue Grenoble',       'telephone': 0595568027, 'email': 'albert@gmail.com', 'date': new Date('2015-02-02T09:00:00Z') },
+  { '_id': 11, 'name': 'Dan',     'address': '27 rue Universitaire', 'telephone': 0778036026,'email': 'dan@gmail.com', 'date': new Date('2015-04-15T08:00:00Z') },
+  { '_id': 12, 'name': 'Peter',   'address': '31 rue Paris',         'telephone': 0627557248, 'email':  'peter@gmail.com', 'date': new Date('2015-05-03T11:21:39.736Z') },
+  { '_id': 13, 'name': 'Val',     'address': '55 rue Nantes',        'telephone': 0630419178, 'email': 'val@gmail.com', 'date': new Date('2015-06-02T21:22:13.331Z') },
+  { '_id': 14, 'name': 'Mark',    'address': '45 rue Tennis',        'telephone': 0699148185, 'email': 'mark@gmail.com', 'date': new Date('2015-07-04T05:08:12Z') },
+  { '_id': 15, 'name': 'Chris',   'address': '38 rue Andrea',        'telephone': 0600443066,'email': 'chris@gmail.com', 'date': new Date('2016-08-10T08:40:00Z') },
+  { '_id': 16, 'name': 'Noah',    'address': '9 rue pierre',         'telephone': 0765578422, 'email': 'noah@gmail.com', 'date': new Date('2015-01-06T20:20:13Z') },
+]);
+
+
+db.lender.find({ date: { $gte: new Date('2014-04-04'), $lt: new Date('2014-04-05') } });
+
+const aggregation = [
+  { $match: { date: { $gte: new Date('2014-01-01'), $lt: new Date('2015-01-01') } } },
+  { $group: { _id: '$item', totalLenderAmount: { $sum: { $multiply: [ '$telephone', '$email' ] } } } }
+];
+
+// Run 
+db.lender.aggregate(aggregation);
